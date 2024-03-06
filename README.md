@@ -1,5 +1,5 @@
 # Libs:
 
-###pip install pandas
-###pip install bokeh
-###pip install streamlit 
+##pip install pandas
+##pip install bokeh
+##pip install streamlit 
