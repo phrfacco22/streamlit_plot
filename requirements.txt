@@ -2,3 +2,4 @@ streamlit
 pandas
 bokeh
 openpyxl
+xlrd
