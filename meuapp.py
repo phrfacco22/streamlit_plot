@@ -181,7 +181,7 @@ def gerar_relatorio():
     p2.yaxis.axis_label = "Desconto (Faixa) %"
 
     abas = Tabs(tabs=[tabCPM, tabDesc]) 
-    output_file(filename="relatorio_pricing.html", title="Pricing Gráficos") 
+    output_file(filename="C:/Temp/relatorio_pricing.html", title="Pricing Gráficos") 
     save(abas)
       
 
