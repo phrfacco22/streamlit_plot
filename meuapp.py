@@ -1,10 +1,14 @@
 import streamlit as st
 import pandas as pd
-from bokeh.plotting import figure, show, output_file
+from bokeh.plotting import figure, save, output_file
 from bokeh.models import HoverTool, ColumnDataSource
 from bokeh.models import TabPanel, Tabs
 from bokeh.models import CustomJS, RangeSlider
 from bokeh.layouts import row, column
+from pathlib import Path
+import os
+
+
 
 df_cpm = None
 excel_file_path = ""
@@ -177,7 +181,9 @@ def gerar_relatorio():
     p2.yaxis.axis_label = "Desconto (Faixa) %"
 
     abas = Tabs(tabs=[tabCPM, tabDesc]) 
-    show(abas)          
+    output_file(filename="relatorio_pricing.html", title="Pricing Gráficos") 
+    save(abas)
+      
 
 
 st.set_page_config(page_title="Pricing Plot")
