@@ -177,8 +177,7 @@ def gerar_relatorio():
     p2.yaxis.axis_label = "Desconto (Faixa) %"
 
     abas = Tabs(tabs=[tabCPM, tabDesc]) 
-    # show(abas)
-    st.link_button("Go to gallery", "https://streamlit.io/gallery", output_file("relatorio.html", abas))          
+    show(abas)          
 
 
 st.set_page_config(page_title="Pricing Plot")
