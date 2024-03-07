@@ -177,7 +177,7 @@ def gerar_relatorio():
     p2.yaxis.axis_label = "Desconto (Faixa) %"
 
     abas = Tabs(tabs=[tabCPM, tabDesc]) 
-    st.write_stream(show(abas))          
+    show(abas)          
 
 
 st.set_page_config(page_title="Pricing Plot")
