@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-from bokeh.plotting import figure, output_file
+from bokeh.plotting import figure, show
 from bokeh.models import HoverTool, ColumnDataSource
 from bokeh.models import TabPanel, Tabs
 from bokeh.models import CustomJS, RangeSlider
