@@ -3,3 +3,4 @@ pandas
 bokeh
 openpyxl
 xlrd
+functions.generate_db
