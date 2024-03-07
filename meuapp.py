@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-from bokeh.plotting import figure, show
+from bokeh.plotting import figure, show, output_file
 from bokeh.models import HoverTool, ColumnDataSource
 from bokeh.models import TabPanel, Tabs
 from bokeh.models import CustomJS, RangeSlider
@@ -177,7 +177,8 @@ def gerar_relatorio():
     p2.yaxis.axis_label = "Desconto (Faixa) %"
 
     abas = Tabs(tabs=[tabCPM, tabDesc]) 
-    show(abas)          
+    # show(abas)
+    st.link_button("Go to gallery", "https://streamlit.io/gallery", output_file("relatorio.html", abas))          
 
 
 st.set_page_config(page_title="Pricing Plot")
