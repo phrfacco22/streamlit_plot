@@ -186,7 +186,6 @@ def gerar_relatorio():
         source_code = HtmlFile.read() 
         components.html(source_code, width=1200, height=900)
         
-        # components.iframe("relatorio.html", width=600, height=600)
 
 st.set_page_config(page_title="Pricing Plot")
 
