@@ -13,6 +13,8 @@ df_cpm = None
 excel_file_path = ""
 report_file_path = ""
 
+st.set_page_config(page_title="Pricing Plot", layout="wide")
+
 def carrega_excel():
     global df_cpm, excel_file_path        
     uploaded_file = st.file_uploader(f'Insira um arquivo por vez do formato planilha (xlsx/xls/csv):', type=(["xlsx", "csv", "xls"]))
@@ -124,7 +126,7 @@ def gerar_relatorio():
     p2 = figure(title="Gráfico de Dispersão - Ocupação x Desconto", tools="pan,box_zoom,reset,save,zoom_in, zoom_out", background_fill_color='lightblue', width=900, height=600)
     points = p2.scatter('x', 'y', size=10, source=source2, fill_alpha=0.6, line_color=None, legend_label="Veículos")
 
-    range_slider_ocupacao = RangeSlider(start=0.00, end=100.00, value=(0,100), step=.1, title="Ocupação (Faixa)", width=200, margin=10)
+    range_slider_ocupacao = RangeSlider(start=0.00, end=100.00, value=(0,100), step=.1, title="Ocupação (Faixa)", width=400, margin=10)
 
     range_slider_ocupacao.js_on_change('value', CustomJS(args=dict(o=p2.x_range) ,code="""
                                                 o.start = this.value[0];
@@ -133,7 +135,7 @@ def gerar_relatorio():
                                                 )
     )
 
-    range_slider_desconto = RangeSlider(start=0.00, end=100.00, value=(0,100), step=.1, title="Desconto (Faixa)", width=200, margin=10)
+    range_slider_desconto = RangeSlider(start=0.00, end=100.00, value=(0,100), step=.1, title="Desconto (Faixa)", width=400, margin=10)
 
     range_slider_desconto.js_on_change('value', CustomJS(args=dict(d=p2.y_range), code="""
                                                 d.start = this.value[0];
@@ -181,16 +183,15 @@ def gerar_relatorio():
 
     abas = Tabs(tabs=[tabCPM, tabDesc]) 
     
-    with st.container():
+    with st.container():    
         HtmlFile = open("relatorio.html", 'r', encoding='utf-8')
-        source_code = HtmlFile.read() 
-        components.html(source_code, width=1200, height=900)
-        
+        source_code = HtmlFile.read()
+        st.write("---") 
+        components.html(source_code, width=1500, height=1000)
 
-st.set_page_config(page_title="Pricing Plot")
 
 with st.container():
-    st.subheader("Gráficos de CPM x Audiência / Ocupação x Desconto")
+    st.subheader("Gráficos de CPM x Audiência / Ocupação (Faixa) x Desconto (Faixa)")
     st.write("Informações sobre os veículos da Rede.")
 
 def abrir_relatorio():
