@@ -126,7 +126,7 @@ def gerar_relatorio():
     p2 = figure(title="Gráfico de Dispersão - Ocupação x Desconto", tools="pan,box_zoom,reset,save,zoom_in, zoom_out", background_fill_color='lightblue', width=900, height=600)
     points = p2.scatter('x', 'y', size=10, source=source2, fill_alpha=0.6, line_color=None, legend_label="Veículos")
 
-    range_slider_ocupacao = RangeSlider(start=0.00, end=100.00, value=(0,100), step=.1, title="Ocupação (Faixa)", width=400, margin=10)
+    range_slider_ocupacao = RangeSlider(start=0.00, end=100.00, value=(0,100), step=.1, title="Ocupação (Faixa)", width=200, margin=10)
 
     range_slider_ocupacao.js_on_change('value', CustomJS(args=dict(o=p2.x_range) ,code="""
                                                 o.start = this.value[0];
@@ -135,7 +135,7 @@ def gerar_relatorio():
                                                 )
     )
 
-    range_slider_desconto = RangeSlider(start=0.00, end=100.00, value=(0,100), step=.1, title="Desconto (Faixa)", width=400, margin=10)
+    range_slider_desconto = RangeSlider(start=0.00, end=100.00, value=(0,100), step=.1, title="Desconto (Faixa)", width=200, margin=10)
 
     range_slider_desconto.js_on_change('value', CustomJS(args=dict(d=p2.y_range), code="""
                                                 d.start = this.value[0];
