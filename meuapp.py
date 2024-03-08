@@ -6,8 +6,6 @@ from bokeh.models import HoverTool, ColumnDataSource
 from bokeh.models import TabPanel, Tabs
 from bokeh.models import CustomJS, RangeSlider
 from bokeh.layouts import row, column
-from pathlib import Path
-import os
 
 
 
@@ -183,9 +181,12 @@ def gerar_relatorio():
 
     abas = Tabs(tabs=[tabCPM, tabDesc]) 
     
-    components.iframe()
-      
-
+    with st.container():
+        HtmlFile = open("relatorio.html", 'r', encoding='utf-8')
+        source_code = HtmlFile.read() 
+        components.html(source_code, width=900, height=900)
+        
+        # components.iframe("relatorio.html", width=600, height=600)
 
 st.set_page_config(page_title="Pricing Plot")
 
