@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import streamlit.components.v1 as components
 from bokeh.plotting import figure, save, output_file
 from bokeh.models import HoverTool, ColumnDataSource
 from bokeh.models import TabPanel, Tabs
@@ -181,8 +182,9 @@ def gerar_relatorio():
     p2.yaxis.axis_label = "Desconto (Faixa) %"
 
     abas = Tabs(tabs=[tabCPM, tabDesc]) 
-    output_file(filename="C:/Temp/relatorio_pricing.html", title="Pricing Gráficos") 
-    save(abas)
+    
+    components.iframe("https://docs.streamlit.io/en/latest")
+    components.iframe("https://www.randomservices.org/")
       
 
 
