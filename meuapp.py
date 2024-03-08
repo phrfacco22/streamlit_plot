@@ -17,7 +17,7 @@ st.set_page_config(page_title="Pricing Plot", layout="wide")
 
 def carrega_excel():
     global df_cpm, excel_file_path        
-    uploaded_file = st.file_uploader(f'Insira um arquivo por vez do formato planilha (xlsx/xls/csv):', type=(["xlsx", "csv", "xls"]))
+    uploaded_file = st.file_uploader('Insira um arquivo por vez do formato planilha (xlsx/xls/csv):', type=(["xlsx", "csv", "xls"]))
     
     if uploaded_file:
         # Leitura e atribuição do arquivo excel ao arquivo de upload.
