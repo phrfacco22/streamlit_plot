@@ -183,8 +183,7 @@ def gerar_relatorio():
 
     abas = Tabs(tabs=[tabCPM, tabDesc]) 
     
-    components.iframe("https://docs.streamlit.io/en/latest")
-    components.iframe("https://www.randomservices.org/")
+    components.iframe()
       
 
 
