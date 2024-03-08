@@ -183,7 +183,7 @@ def gerar_relatorio():
 
     abas = Tabs(tabs=[tabCPM, tabDesc]) 
     
-    with st.container():    
+    with st.container():   
         HtmlFile = open("relatorio.html", 'r', encoding='utf-8')
         source_code = HtmlFile.read()
         st.write("---") 
@@ -200,3 +200,4 @@ def abrir_relatorio():
 with st.container():
     st.write("---")
     abrir_relatorio()
+
