@@ -184,7 +184,7 @@ def gerar_relatorio():
     with st.container():
         HtmlFile = open("relatorio.html", 'r', encoding='utf-8')
         source_code = HtmlFile.read() 
-        components.html(source_code, width=900, height=700)
+        components.iframe(source_code, width=900, height=700)
         
         # components.iframe("relatorio.html", width=600, height=600)
 
