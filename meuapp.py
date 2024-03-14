@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 import streamlit.components.v1 as components
-from bokeh.plotting import figure, save, output_file
+from bokeh.plotting import figure
 from bokeh.models import HoverTool, ColumnDataSource
 from bokeh.models import TabPanel, Tabs
 from bokeh.models import CustomJS, RangeSlider
@@ -123,10 +123,10 @@ def gerar_relatorio():
     source2 = ColumnDataSource(data=dict(x=table3['Unnamed: 7'], y=table3['Unnamed: 12'], labels=table3['Unnamed: 1'] + ' / ' + table3['Unnamed: 2']))
 
     # Cria o gráfico de dispersão
-    p2 = figure(title="Gráfico de Dispersão - Ocupação x Desconto", tools="pan,box_zoom,reset,save,zoom_in, zoom_out", background_fill_color='lightblue', width=900, height=600)
+    p2 = figure(title="Gráfico de Dispersão - Ocupação (Faixa) x Desconto (Faixa)", tools="pan,box_zoom,reset,save,zoom_in, zoom_out", background_fill_color='lightblue', width=900, height=600)
     points = p2.scatter('x', 'y', size=10, source=source2, fill_alpha=0.6, line_color=None, legend_label="Veículos")
 
-    range_slider_ocupacao = RangeSlider(start=0.00, end=100.00, value=(0,100), step=.1, title="Ocupação (Faixa)", width=200, margin=10)
+    range_slider_ocupacao = RangeSlider(start=0.00, end=100.00, value=(0,100), step=.1, title="Ocupação", width=200, margin=10)
 
     range_slider_ocupacao.js_on_change('value', CustomJS(args=dict(o=p2.x_range) ,code="""
                                                 o.start = this.value[0];
@@ -135,7 +135,7 @@ def gerar_relatorio():
                                                 )
     )
 
-    range_slider_desconto = RangeSlider(start=0.00, end=100.00, value=(0,100), step=.1, title="Desconto (Faixa)", width=200, margin=10)
+    range_slider_desconto = RangeSlider(start=0.00, end=100.00, value=(0,100), step=.1, title="Desconto", width=200, margin=10)
 
     range_slider_desconto.js_on_change('value', CustomJS(args=dict(d=p2.y_range), code="""
                                                 d.start = this.value[0];
@@ -183,15 +183,16 @@ def gerar_relatorio():
 
     abas = Tabs(tabs=[tabCPM, tabDesc]) 
     
-    with st.container():   
+    with st.container():                                                                # Container que exibe o html do gráfico.      
         HtmlFile = open("relatorio.html", 'r', encoding='utf-8')
         source_code = HtmlFile.read()
-        st.write("---") 
+        st.write("---")
         components.html(source_code, width=1200, height=1000)
-
+  
+        
 
 with st.container():
-    st.subheader("Gráficos de CPM x Audiência / Ocupação (Faixa) x Desconto (Faixa)")
+    st.subheader("Gráficos de CPM x Audiência / Ocupação x Desconto")
     st.write("Informações sobre os veículos da Rede.")
 
 def abrir_relatorio():
