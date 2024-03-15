@@ -187,7 +187,7 @@ def gerar_relatorio():
         HtmlFile = open("relatorio.html", 'r', encoding='utf-8')
         source_code = HtmlFile.read()
         st.write("---")
-        components.html(source_code, width=1300, height=1000)
+        components.html(source_code, width=1200, height=1000)
   
         
 
