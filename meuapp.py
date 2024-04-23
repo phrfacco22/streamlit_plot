@@ -120,7 +120,7 @@ def gerar_relatorio():
     table3['Unnamed: 12'] = pd.to_numeric(table3['Unnamed: 12']*100, errors='coerce', downcast='float')
 
     # Cria a origem dos dados
-    source2 = ColumnDataSource(data=dict(x=table3['Unnamed: 7'], y=table3['Unnamed: 12'], labels=table3['Unnamed: 1'] + ' / ' + table3['Unnamed: 2']))
+    source2 = ColumnDataSource(data=dict(x=table3['Unnamed: 7'], y=table3['Unnamed: 12'], labels=table3['Unnamed: 1'] + ' / ' + table3['Unnamed: 2'], cpm=table2['Unnamed: 9'], audiencia=table2['Unnamed: 7']))
 
     # Cria o gráfico de dispersão
     p2 = figure(title="Gráfico de Dispersão - Ocupação (Faixa) x Desconto (Faixa)", tools="pan,box_zoom,reset,save,zoom_in, zoom_out", background_fill_color='lightblue', width=900, height=600)
@@ -151,7 +151,7 @@ def gerar_relatorio():
     p2.toolbar.autohide = True
 
     # Adiciona a ferramenta de dica interativa
-    hover = HoverTool(renderers=[points], tooltips=[("Veículo", "@labels"), ("Ocupação (Faixa)", "@x{0.00}%"), ("Desconto (Faixa)", "@y{0.00}%")])
+    hover = HoverTool(renderers=[points], tooltips=[("Veículo", "@labels"), ("Ocupação (Faixa)", "@x{0.00}%"), ("Desconto (Faixa)", "@y{0.00}%"), ("Audiência", "@audiencia{0}"), ("CPM", "@cpm{0.0}")])
     p2.add_tools(hover)
 
     # Adiciona rótulos com contorno
