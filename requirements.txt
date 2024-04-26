@@ -1,5 +1,5 @@
-streamlit
-pandas
-bokeh
-openpyxl
+streamlit == 1.31.1
+pandas == 2.2.2
+bokeh == 3.3.4
+openpyxl == 3.1.2
 
