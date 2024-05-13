@@ -75,6 +75,9 @@ def gerar_relatorio():
     # Lista de praças
     lista_praca = list(table2['Unnamed: 1'])
 
+     # Legendas dos pontos plotados no gráfico.
+    labels = LabelSet(x='x', y='y', text='labels', x_offset=2.5, y_offset=2.5, source=source, text_font_size="7pt", text_color='brown', angle= 0.6)
+
     # Checkbox Group para seleção de praças
     checkbox_praca = CheckboxGroup(labels=lista_praca)
 
@@ -107,38 +110,8 @@ def gerar_relatorio():
 
     # Adicionar ferramenta de dica interativa
     hover_audiencia = HoverTool(renderers=[points], tooltips=[("Veículo", "@labels"), ("CPM", "@y{sep='.'}"), ("Audiência", "@x{0}"), ("Preço 30'", "@preco")])
-    p.add_tools(hover_audiencia)
+    p.add_tools(hover_audiencia) 
     
-    texts = []
-    text_offset = 0.015
-    
-    #Adicionar rótulo nos pontos do plot
-    for i, txt in enumerate(table2['Unnamed: 1']):
-        color = None
-
-        # Definir cores com base no nome
-        if "CBN" in txt:
-            color = "red"
-        elif "GAZ" in txt:
-            color = "blue"
-        elif "LIT" in txt:
-            color = "brown"
-        elif "MIX" in txt:
-            color = "green"
-        elif "TV" in txt:
-            color = "black"
-        text = p.text(
-            x=float(table2['Unnamed: 7'].iloc[i]) + 0.1,
-            y=float(table2['Unnamed: 9'].iloc[i]) - text_offset,
-            text=[str(txt)],
-            text_font_size="7pt",
-            text_align="left",
-            angle= 0.6,
-            text_baseline="bottom",
-            text_color=color)                                                    # Definir a cor da fonte
-        texts.append(text)
-    
-       
     # Configurar rótulos dos eixos
     p.xaxis.axis_label = "Audiência (%)"
     p.yaxis.axis_label = "CPM (%)"
@@ -224,26 +197,11 @@ def gerar_relatorio():
     texts = []
     text_offset = 0.015                                                              # Ajuste manual da posição vertical do texto
 
-    for i, txt in enumerate(table3['Unnamed: 1'] + ' / ' + table3["Unnamed: 2"]):
-        color = None
-
-        # Definir cores com base no nome
-        if "LITORAL" in txt:
-            color = "red"
-        elif "GAZETA" in txt:
-            color = "blue"
-        text = p2.text(
-            x= table3['Unnamed: 7'].iloc[i] + 0.1,
-            y= table3['Unnamed: 12'].iloc[i] - text_offset,
-            text=[str(txt)],
-            text_font_size="7pt",
-            text_align="left",
-            angle= 0.6,
-            text_baseline="bottom",
-            text_color=color)                                                    # Definir a cor da fonte
-        texts.append(text)
-        
+    labels_ocupacao = list(source_labels)
     
+    # Legendas dos pontos plotados no gráfico.
+    labels_ocup = LabelSet(x='x', y='y', text='labels', x_offset=2.5, y_offset=2.5, source=source2, text_font_size="7pt", text_color='blue', angle= 0.6)
+       
     # Configurar rótulos dos eixos
     p2.xaxis.axis_label = "Ocupação (Faixa) %"
     p2.yaxis.axis_label = "Desconto (Faixa) %"
