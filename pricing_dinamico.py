@@ -1,11 +1,12 @@
 import streamlit as st
 import pandas as pd
 import streamlit.components.v1 as components
-from bokeh.plotting import figure, show
+from bokeh.plotting import figure, show, output_file, save
 from bokeh.models import HoverTool, ColumnDataSource
 from bokeh.models import TabPanel, Tabs
-from bokeh.models import CustomJS, RangeSlider, CheckboxGroup
+from bokeh.models import CustomJS, Select, RangeSlider, CheckboxGroup
 from bokeh.layouts import row, column
+from bokeh.models.annotations import LabelSet
 
 
 
