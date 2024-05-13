@@ -210,6 +210,8 @@ def gerar_relatorio():
     tabDesc = TabPanel(child=layout2, title="Ocupação/Desconto")
 
     abas = Tabs(tabs=[tabCPM, tabDesc])
+    report_file = output_file("relatorio.html")
+    save(abas, report_file)
     
     with st.container():                                                                # Container que exibe o html do gráfico.      
         HtmlFile = open("relatorio.html", 'r', encoding='utf-8')
