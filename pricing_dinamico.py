@@ -14,7 +14,7 @@ df = None
 excel_file_path = ""
 report_file_path = ""
 
-st.set_page_config(page_title="Pricing Plot", layout="wide")
+st.set_page_config(page_title="Python Plot", layout="wide")
 
 def carrega_excel():
     global df, excel_file_path        
@@ -35,7 +35,7 @@ def gerar_relatorio():
         st.warning("Por favor, carregue um arquivo do formato especificado.")
         return
 
-    df_cpm = pd.read_excel(excel_file_path, sheet_name='CPM', na_filter=True)
+    df_cpm = pd.read_excel(excel_file_path, sheet_name='', na_filter=True)
     table = df_cpm.loc[:, "Unnamed: 1":"Unnamed: 10"]
     table2 = table.dropna(axis=0, how='all').dropna(axis=1, how='all')
     table2 = table2.iloc[1:50, :]
@@ -53,36 +53,36 @@ def gerar_relatorio():
     
                         
     # Criar o gráfico de dispersão de cpm/audiência
-    p = figure(title="Gráfico de Dispersão - CPM x Nro de Ouvintes por Minuto", tools="pan,box_zoom,reset,save,zoom_in, zoom_out", background_fill_color='lightblue', width=900, height=600)
+    p = figure(title="Gráfico de Dispersão", tools="pan,box_zoom,reset,save,zoom_in, zoom_out", background_fill_color='lightblue', width=900, height=600)
     points = p.scatter('x', 'y', size=10, source=source, fill_alpha=0.6, line_color=None, legend_label="Veículos")
 
     
-    range_slider_cpm = RangeSlider(start=0.00, end=90.00, value=(0,90), step=.1, title="CPM", width=200, margin=10)
+    range_slider_y = RangeSlider(start=0.00, end=90.00, value=(0,90), step=.1, title="CPM", width=200, margin=10)
 
-    range_slider_cpm.js_on_change('value', CustomJS(args=dict(c=p.y_range), code="""
+    range_slider_y.js_on_change('value', CustomJS(args=dict(c=p.y_range), code="""
                                                     c.start = this.value[0];                                      
                                                     c.end = this.value[1];
                                                     """)
                                 )
 
-    range_slider_audiencia = RangeSlider(start=0.00, end=90000.00, value=(0,90000), step=.1, title="Audiência", width=200, margin=10)
+    range_slider_x = RangeSlider(start=0.00, end=90000.00, value=(0,90000), step=.1, title="Eixo X", width=200, margin=10)
 
-    range_slider_audiencia.js_on_change('value', CustomJS(args=dict(a=p.x_range), code="""
+    range_slider_x.js_on_change('value', CustomJS(args=dict(a=p.x_range), code="""
                                                         a.start = this.value[0];
                                                         a.end = this.value[1];                                                                                                            
                                                         """)
                                         )
     
     # Lista de praças
-    lista_praca = list(table2['Unnamed: 1'])
+    lista_itens = list(table2['Unnamed: 1'])
 
      # Legendas dos pontos plotados no gráfico.
     labels = LabelSet(x='x', y='y', text='labels', x_offset=2.5, y_offset=2.5, source=source, text_font_size="7pt", text_color='brown', angle= 0.6)
 
     # Checkbox Group para seleção de praças
-    checkbox_praca = CheckboxGroup(labels=lista_praca)
+    checkbox_item = CheckboxGroup(labels=lista_itens)
 
-    checkbox_praca.js_on_change('active', CustomJS(args=dict(source=source, source_x=source_x, source_y=source_y, source_labels=source_labels, source_preco=source_preco), code="""
+    checkbox_item.js_on_change('active', CustomJS(args=dict(source=source, source_x=source_x, source_y=source_y, source_labels=source_labels, source_preco=source_preco), code="""
         
         const selected_indices = cb_obj.active;
            
@@ -103,27 +103,27 @@ def gerar_relatorio():
         source.change.emit();
     """))
     
-    layout = (row(column(range_slider_cpm, range_slider_audiencia, checkbox_praca), p))
-    tabCPM = TabPanel(child=layout, title="CPM")
+    layout = (row(column(range_slider_y, range_slider_x, checkbox_item), p))
+    tab_graf1 = TabPanel(child=layout, title="Gráfico 1")
 
     # Ativa o autohide para mostrar a barra de ferramentas somente quando o mouse estiver em cima dela.
     p.toolbar.autohide = True
 
     # Adicionar ferramenta de dica interativa
-    hover_audiencia = HoverTool(renderers=[points], tooltips=[("Veículo", "@labels"), ("CPM", "@y{sep='.'}"), ("Audiência", "@x{0}"), ("Preço 30'", "@preco")])
-    p.add_tools(hover_audiencia) 
+    hover_x = HoverTool(renderers=[points], tooltips=[("Itens", "@labels")])
+    p.add_tools(hover_x) 
     
     # Configurar rótulos dos eixos
-    p.xaxis.axis_label = "Audiência (%)"
-    p.yaxis.axis_label = "CPM (%)"
+    p.xaxis.axis_label = "Eixo X (%)"
+    p.yaxis.axis_label = "Eixo Y (%)"
 
     
     #Lê a aba Tx Ocupação (somente uma tabela) e pula a linha de índice 1.
-    df2 = pd.read_excel(excel_file_path, sheet_name='Tx Ocupação')
+    df2 = pd.read_excel(excel_file_path, sheet_name='')
     table = df2.loc[:, "Unnamed: 1":"Unnamed: 12"]
     table3 = table.dropna(thresh=6).dropna(axis=1, how='all')                                                                       # Remove linhas com valores nulos de linhas e colunas.            
     table3 = table3.iloc[3:75]                                                                                                      # Percorrendo linhas da tabela.
-    mask = (table3['Unnamed: 1'] == 'Emissora')
+    # mask = (table3['Unnamed: 1'] == '')
     table3 = table3.loc[~mask]
     
     table3['Unnamed: 7'] = pd.to_numeric(table3['Unnamed: 7'] * 100, errors='coerce', downcast='float')
@@ -144,25 +144,25 @@ def gerar_relatorio():
     p2 = figure(title="Gráfico de Dispersão - Ocupação (Faixa) x Desconto (Faixa)", tools="pan,box_zoom,reset,save,zoom_in, zoom_out", background_fill_color='lightblue', width=900, height=600)
     points = p2.scatter('x', 'y', size=10, source=source2, fill_alpha=0.6, line_color=None, legend_label="Veículos")
 
-    range_slider_ocupacao = RangeSlider(start=0.00, end=100.00, value=(0,100), step=.1, title="Ocupação", width=200, margin=10)
-    range_slider_ocupacao.js_on_change('value', CustomJS(args=dict(o=p2.x_range) ,code="""
+    range_slider_seg_x = RangeSlider(start=0.00, end=100.00, value=(0,100), step=.1, title="Ocupação", width=200, margin=10)
+    range_slider_seg_x.js_on_change('value', CustomJS(args=dict(o=p2.x_range) ,code="""
             o.start = this.value[0];
             o.end = this.value[1];
     """))
 
-    range_slider_desconto = RangeSlider(start=0.00, end=100.00, value=(0,100), step=.1, title="Desconto", width=200, margin=10)
-    range_slider_desconto.js_on_change('value', CustomJS(args=dict(d=p2.y_range), code="""
+    range_slider_seg_y = RangeSlider(start=0.00, end=100.00, value=(0,100), step=.1, title="Desconto", width=200, margin=10)
+    range_slider_seg_y.js_on_change('value', CustomJS(args=dict(d=p2.y_range), code="""
             d.start = this.value[0];
             d.end = this.value[1];
     """))
     
-    labels_ocupacao = list(table3['Unnamed: 1'] + ' ' + table3['Unnamed: 2'])
+    labels_items_seg = list(table3['Unnamed: 1'] + ' ' + table3['Unnamed: 2'])
     
     # Checkbox Group para seleção de praças
-    checkbox_praca_ocupacao = CheckboxGroup(labels=labels_ocupacao)
+    checkbox_seg_items = CheckboxGroup(labels=labels_items_seg)
 
     # Define função callback para grupo checkbox
-    checkbox_praca_ocupacao.js_on_change('active', CustomJS(args=dict(source=source2, source_x=source_x, source_y=source_y, source_labels=source_labels, source_cpm=source_cpm, source_audiencia=source_audiencia), code="""
+    checkbox_seg_items.js_on_change('active', CustomJS(args=dict(source=source2, source_x=source_x, source_y=source_y, source_labels=source_labels, source_cpm=source_cpm, source_audiencia=source_audiencia), code="""
         
         const selected_indices = cb_obj.active;
            
@@ -191,26 +191,26 @@ def gerar_relatorio():
     p2.toolbar.autohide = True
     
     # Adiciona a ferramenta de dica interativa
-    hover_ocupacao = HoverTool(renderers=[points], tooltips=[("Veículo", "@labels"), ("Ocupação (Faixa)", "@x{0.00}%"), ("Desconto (Faixa)", "@y{0.00}%"), ("Audiência", "@audiencia{0}"), ("CPM", "@cpm{0.0}")])
-    p2.add_tools(hover_ocupacao)
+    hover_seg_y = HoverTool(renderers=[points], tooltips=[("Nome do item: ", "@labels")])
+    p2.add_tools(hover_seg_y)
     
     # Adiciona rótulos com contorno
     texts = []
     text_offset = 0.015                                                              # Ajuste manual da posição vertical do texto
 
-    labels_ocupacao = list(source_labels)
+    labels_seg_y = list(source_labels)
     
     # Legendas dos pontos plotados no gráfico.
-    labels_ocup = LabelSet(x='x', y='y', text='labels', x_offset=2.5, y_offset=2.5, source=source2, text_font_size="7pt", text_color='blue', angle= 0.6)
+    labels_seg_graf = LabelSet(x='x', y='y', text='labels', x_offset=2.5, y_offset=2.5, source=source2, text_font_size="7pt", text_color='blue', angle= 0.6)
        
     # Configurar rótulos dos eixos
-    p2.xaxis.axis_label = "Ocupação (Faixa) %"
-    p2.yaxis.axis_label = "Desconto (Faixa) %"
+    p2.xaxis.axis_label = "Eixo %"
+    p2.yaxis.axis_label = "Eixo Y %"
    
-    layout2 = (row(column(range_slider_ocupacao, range_slider_desconto, checkbox_praca_ocupacao), p2))
-    tabDesc = TabPanel(child=layout2, title="Ocupação/Desconto")
+    layout2 = (row(column(range_slider_seg_x, range_slider_seg_y, checkbox_seg_items), p2))
+    tab_graf2 = TabPanel(child=layout2, title="Gráfico 2")
 
-    abas = Tabs(tabs=[tabCPM, tabDesc])
+    abas = Tabs(tabs=[tab_graf1, tab_graf2])
     report_file = output_file("relatorio.html")
     save(abas, report_file)
     
@@ -223,8 +223,8 @@ def gerar_relatorio():
         
 
 with st.container():
-    st.subheader("Gráficos de CPM x Audiência / Ocupação x Desconto")
-    st.write("Informações sobre os veículos da Rede.")
+    st.subheader("Gráfico")
+    st.write("Informações sobre os items.")
 
 def abrir_relatorio():
     gerar_relatorio()
